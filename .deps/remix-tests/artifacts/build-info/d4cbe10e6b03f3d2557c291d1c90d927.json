@@ -1,0 +1,72 @@
+{
+	"id": "d4cbe10e6b03f3d2557c291d1c90d927",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.23",
+	"solcLongVersion": "0.8.23+commit.f704f362",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			".deps/remix-tests/remix_accounts.sol": {
+				"content": "// SPDX-License-Identifier: GPL-3.0\n\npragma solidity >=0.4.22 <0.9.0;\n\n"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			},
+			"remappings": []
+		}
+	},
+	"output": {
+		"sources": {
+			".deps/remix-tests/remix_accounts.sol": {
+				"ast": {
+					"absolutePath": ".deps/remix-tests/remix_accounts.sol",
+					"exportedSymbols": {},
+					"id": 2,
+					"license": "GPL-3.0",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								">=",
+								"0.4",
+								".22",
+								"<",
+								"0.9",
+								".0"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "37:32:0"
+						}
+					],
+					"src": "37:34:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}
