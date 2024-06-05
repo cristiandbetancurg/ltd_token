@@ -33,39 +33,39 @@ contract LivingTheDream is ERC20, ERC20Burnable, Ownable, ReentrancyGuard, Pausa
       constructor(address payable _treasuryAddress, address newOwner) ERC20("Living The Dream", "LTD") Ownable(msg.sender) {
         
         _mint(msg.sender, INITIAL_SUPPLY);
-        _mint(0x3E55eFc604A3E021069AA4852AB5A97798301Fd5, MARKETING_WALLET_AMOUNT); // Se deben cambiar esta wallet, este es un ejemplo
+        _mint(0x3E55eFc604A3E021069AA4852AB5A97798301Fd5, MARKETING_WALLET_AMOUNT); // Marketing and Treasury Wallets must be configured before deploymento
         _mint(0x54412E0892c534c89A076252e3824F1f7f549c52, AIRDROP_WALLET_AMOUNT);
         currentTaxes = Taxes(7, 10);
         treasuryAddress = _treasuryAddress;
-        _mint(newOwner, INITIAL_SUPPLY); // Acuñar el suministro inicial al nuevo propietario
-        transferOwnership(newOwner); // Transferir la propiedad al desplegar todo
+        _mint(newOwner, INITIAL_SUPPLY); // Coin the initial supply to the new owner
+        transferOwnership(newOwner); //For deployment security, ownership is transferred when everything is deployed.
             
     }
 
     
     
-    // ... (funcion para minteo solo del Owner)
+  // ... (function for owner only)
 
     function mint(address user, uint256 amount) external onlyOwner {
         _mint(user, amount);
     }
 
-    // se pausa las tranferencias, pero solo el owner puede hacer //
+    // Transfers are paused, but only the owner can do //
     function pause() external onlyOwner {
         _pause();
     }
 
-    // solo el owner puede despausar el contrato
+    // only the owner can unpause the contract
     function unpause() external onlyOwner {
         _unpause();
     }
     
-    // Función burn con modificador onlyOwner
+    // Burn function with onlyOwner modifier
     function burn(address account, uint256 amount) public onlyOwner { // Agregar un argumento para la dirección
         _burn(account, amount); // Quemar desde la dirección especificada
     }
 
-    // Funciones para listas blancas y negras
+    // White and black list functions
     function addToWhitelist(address account) external onlyOwner {
         isWhitelisted[account] = true;
     }
@@ -91,21 +91,21 @@ contract LivingTheDream is ERC20, ERC20Burnable, Ownable, ReentrancyGuard, Pausa
         isExcludedFromTax[account] = false;
     }
 
-        function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual { // Eliminamos override
+        function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual { 
         uint256 taxAmount = 0;
         if (!isExcludedFromTax[from] && !isExcludedFromTax[to]) {
-            if (from == address(this)) { // Venta
+            if (from == address(this)) { // Sell
                 taxAmount = (amount * currentTaxes.sellTax) / 100;
-            } else if (!isWhitelisted[from]) { // Compra (y no está en la whitelist)
+            } else if (!isWhitelisted[from]) { //Purchase (and it is not on the whitelist)
                 taxAmount = (amount * currentTaxes.buyTax) / 100;
             }
         }
 
         if (taxAmount > 0) {
-            _transfer(from, treasuryAddress, taxAmount); // Transferir impuestos a la tesorería
+            _transfer(from, treasuryAddress, taxAmount); // Transfer taxes to the treasury
         }
     }
-    // Función para cambiar la dirección de tesorería (solo el propietario)
+    // Function to change treasury address (owner only)
     function setTreasuryAddress(address payable newTreasuryAddress) external onlyOwner {
         treasuryAddress = newTreasuryAddress;
     }
